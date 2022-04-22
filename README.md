@@ -2,7 +2,7 @@
 
 Syncs your test package in parent directory or relative to it into your current project without creating symlinks and node_module conflicts like npm link.
 
-`npx link-sync -p test-package-in-parent-dir-or-relative-parent-dir -w`
+`npx link-sync@latest -p test-package-in-parent-dir-or-relative-parent-dir -w`
 
 
 ## Comandline params
