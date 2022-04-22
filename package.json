@@ -1,7 +1,7 @@
 {
   "name": "link-sync",
-  "version": "1.0.0",
-  "description": "",
+  "version": "1.0.1",
+  "description": "Syncs your test package in parent directory or relative to it into your current project without creating symlinks and node_module conflicts like npm link.",
   "main": "index.js",
   "scripts": {
     "sync": "node index.js"
