@@ -1,15 +1,20 @@
 # link-sync
 
-Npm link alternative.
-Syncs your test package to your current project.
+Syncs your test package in parent directory or relative to it into your current project without creating symlinks and node_module conflicts like npm link.
 
 `npx link-sync -p test-package-in-parent-dir-or-relative-parent-dir -w`
 
-## Motivation
 
-Testing npm packages before publishing to npm using node_modules must  be deleted in your test package to avoid dependencies conflicts. Also it creates  symlinks. You can do it manualy, or use this util.
+## Comandline params
+
+`-w --watch` : when provided link-sync works in watch mode
+
+`-p --path` : package path relative to the parent directory 
+
+`-v, --version` : link-sync version 
 
 
+## link-sync vs npm link
 
-
+Testing npm packages before publishing to npm using npm link node_modules directory must be deleted in your test package to avoid dependencies conflicts. Also it creates  symlinks, and it can mess your time with npm unlink. You can do it all manualy, or use this util, 
 
