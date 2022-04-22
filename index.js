@@ -1,19 +1,29 @@
+#! /usr/bin/env node
 const fs = require("fs-extra");
-const watch = require('node-watch');
-console.log(process.argv);
-const path = process.argv[2] || "./../my-awesome-component-library";
-const destPath = process.argv[3] || "../my-awesome-component-library-copy"
-console.log("starting sync between", path, "and", destPath);
-const filesInPath = (path) => {
-    return fs.readdirSync(path).filter(f=> f !== "node_modules");
-};
+const nodeWatch = require('node-watch');
+const commander = require('commander');
 
+commander
+  .version(JSON.parse(fs.readFileSync(__dirname + "/package.json" , "utf-8")).version, '-v, --version')
+  .usage('[OPTIONS]...')
+  .option('-w, --watch', 'Watch package for change')
+  .option('-p, --path  <char>', 'package path relative to the parent directory')
+  .parse(process.argv);
+const {path, watch} = commander.opts();  
+if(!path){
+    console.error("please provile linked package");
+    process.exit(1)
+}
+
+const packetLocation = require("path").resolve("./../" + path);
+
+const packageJsonLocation = packetLocation + "/package.json";
 let packetName;
 try {
-    JSON.parse(fs.readFileSync(path + "/package.json" , "utf-8")).name;
-
+    packetName = JSON.parse(fs.readFileSync(packageJsonLocation , "utf-8")).name;
 } catch (error) {
-    throw("packet at " + path +" not exsist");
+    console.error("error reading " + packageJsonLocation);
+    process.exit(1)
 }
 const removeDir = (path) => {
     try {
@@ -25,16 +35,31 @@ const removeDir = (path) => {
 const makeDir = (dir) => {
     fs.ensureDirSync(dir);
 }
+const niceNumber = (number) => {
+    if(number < 10){
+        return "0" + number;
+    }else {
+        return number
+    }
+}
+const logDate = () => {
+    const date = new Date();
+    return `${niceNumber(date.getHours())}:${niceNumber(date.getMinutes())}:${niceNumber(date.getSeconds())}`
+}
 const sync = () => {
-    const destNodeModules =  destPath + "/node_modules/" + packetName;
+    const syncFiles = (path) => {
+        return fs.readdirSync(packetLocation).filter(f=> f !== "node_modules");
+    };
+    const destNodeModules = "./node_modules/" + packetName;
     removeDir(destNodeModules);
     makeDir(destNodeModules);
-    filesInPath(path).forEach(f=>{
-        fs.copySync( `${path}/${f}`, destNodeModules + "/" +f)
+    syncFiles(path).forEach(f=>{
+        fs.copySync( `${packetLocation}/${f}`, destNodeModules + "/" +f)
     });
-    console.log(new Date().toISOString(), "synced");
+    console.log(`[${logDate()}] `, `${path} synced into node_modules/${packetName}`);
 }
 sync();
-watch(path, { recursive: true }, (eventType, filename) => {
+
+watch && nodeWatch(packetLocation, { recursive: true }, (eventType, filename) => {
     sync();
 });

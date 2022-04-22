@@ -1,8 +1,15 @@
 # link-sync
 
-Utility for syncing test npm packages without node_modules directory.
-Use it like this:
+Npm link alternative.
+Syncs your test package to your current project.
 
-`npm run sync ./test-package ./test-project`
+`npx link-sync -p test-package-in-parent-dir-or-relative-parent-dir -w`
 
-It is better than oroginal npm link because avoids react dependcys conflicts
+## Motivation
+
+Testing npm packages before publishing to npm using node_modules must  be deleted in your test package to avoid dependencies conflicts. Also it creates  symlinks. You can do it manualy, or use this util.
+
+
+
+
+
