@@ -7,14 +7,14 @@ Syncs your test package in parent directory or relative to it into your current 
 
 ## Comandline params
 
-`-w --watch` : when provided link-sync works in watch mode
-
 `-p --path` : package path relative to the parent directory 
+
+`-w --watch` : watch mode
 
 `-v, --version` : link-sync version 
 
 
 ## link-sync vs npm link
 
-Testing npm packages before publishing to npm using npm link node_modules directory must be deleted in your test package to avoid dependencies conflicts. Also it creates  symlinks, and it can mess your time with npm unlink. You can do it all manualy, or use this util, 
+Testing npm packages before publishing to npm using npm link node_modules directory must be deleted in your test package to avoid dependencies conflicts. Also it creates  symlinks, and it can mess your time with npm unlink. You can do it all manualy, or use this util.
 
